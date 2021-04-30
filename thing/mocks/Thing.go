@@ -14,7 +14,7 @@ type Thing struct {
 }
 
 // FetchThing provides a mock function with given fields: thingInput
-func (_m *Thing) FetchThing(thingInput thing.ThingInput) thing.ThingOutput {
+func (_m *Thing) FetchThing(thingInput thing.ThingInput) (thing.ThingOutput, error) {
 	ret := _m.Called(thingInput)
 
 	var r0 thing.ThingOutput
@@ -24,5 +24,12 @@ func (_m *Thing) FetchThing(thingInput thing.ThingInput) thing.ThingOutput {
 		r0 = ret.Get(0).(thing.ThingOutput)
 	}
 
-	return r0
+	var r1 error
+	if rf, ok := ret.Get(1).(func(thing.ThingInput) error); ok {
+		r1 = rf(thingInput)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }

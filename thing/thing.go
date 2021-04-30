@@ -14,19 +14,18 @@ type ThingOutput struct {
 
 //go:generate mockery --name=Thing
 type Thing interface {
-	FetchThing(thingInput ThingInput) ThingOutput
+	FetchThing(thingInput ThingInput) (ThingOutput, error)
 }
 
 type RealThing struct {
 }
 
-func (rt *RealThing) FetchThing(thingInput ThingInput) ThingOutput {
+func (rt *RealThing) FetchThing(thingInput ThingInput) (ThingOutput, error) {
 	if thingInput.Id < 0 {
-		return ThingOutput{
-			Name: fmt.Sprintf("WILD THING: %d", thingInput.Id),
-		}
+		return ThingOutput{}, fmt.Errorf("Bad id")
 	}
-	return ThingOutput{
+	output := ThingOutput{
 		Name: fmt.Sprintf("Thing Name: %d", thingInput.Id),
 	}
+	return output, nil
 }

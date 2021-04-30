@@ -14,6 +14,10 @@ func NewService(thing thing.Thing) (Service) {
 	}
 }
 
-func (s *Service) DoTheThing(id int) string {
-	return s.thing.FetchThing(thing.ThingInput{Id: id}).Name
+func (s *Service) DoTheThing(id int) (string, error) {
+	output, err := s.thing.FetchThing(thing.ThingInput{Id: id})
+	if err != nil {
+		return "", err
+	}
+	return output.Name, nil
 }
